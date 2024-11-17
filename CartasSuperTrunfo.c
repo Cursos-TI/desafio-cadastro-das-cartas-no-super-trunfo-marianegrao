@@ -17,6 +17,8 @@ int main()
         float area;
         float pib;
         int qtdPontosTuristicos;
+        float densidadePopulacional;
+        float pibPerCapita;
     } Carta;
 
     int qtdCartas;
@@ -36,6 +38,8 @@ int main()
         cartas[i].area = 0.0;
         cartas[i].pib = 0.0;
         cartas[i].qtdPontosTuristicos = 0;
+        cartas[i].densidadePopulacional = 0.0;
+        cartas[i].pibPerCapita = 0.0;
     }
 
     for (int i = 0; i < qtdCartas; i++)
@@ -66,6 +70,9 @@ int main()
         scanf("%d", &cartas[i].qtdPontosTuristicos);
         getchar();
 
+        cartas[i].densidadePopulacional = (float)cartas[i].populacao / cartas[i].area;
+        cartas[i].pibPerCapita = cartas[i].pib / (float)cartas[i].populacao;
+
         printf("------------------------\n");
     }
     
@@ -79,6 +86,8 @@ int main()
         printf("População: %d\n", cartas[i].populacao);
         printf("Area: %f km²\n", cartas[i].area);
         printf("PIB: %f\n", cartas[i].pib);
+        printf("Densidade Populacional: %.2f pessoas/km² \n", cartas[i].densidadePopulacional);
+        printf("PIB per Capita: %.2f\n", cartas[i].pibPerCapita);
         printf("Número de Pontos Turísticos: %d\n", cartas[i].qtdPontosTuristicos);
 
         printf("------------------------\n");
