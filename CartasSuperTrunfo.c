@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 // Desafio Super Trunfo - Países.
 // Tema 1 - Cadastro das Cartas
@@ -55,7 +56,6 @@ void listarCartas(Carta cartas[], int qtdCartas, int index)
 
 int listarMenu(int opcao)
 {
-    printf("Escolha uma opção abaixo: \n");
     printf("╭────────────────────────────────────╮\n");
     printf("│            MENU PRINCIPAL          │\n");
     printf("├────────────────────────────────────┤\n");
@@ -72,38 +72,31 @@ int listarMenu(int opcao)
 
 int main()
 {
-    /*
-       TO DO:
-       - [X] Funcao de listar menu: adaptar para uso do ponteiro
-       - [X] Implementar a comparação entre as cartas
-       - [] Corrigir o calculo da densidade populacional e pib per capita
-       - [] Corrigir o nome da cidade
-       - [] Implementar o calculo do super poder
-       - [] Implementar validação p quando primeiraCartaIndex ou segundaCartaIndex for invalido (menor ou maior que a quantidade de cartas cadastradas)
-       - [] Testar os outros att de comparacao
-    */
     int opcao;
     printf("╔════════════════════════════════════╗\n");
     printf("║          🃏 SUPER TRUNFO 🃏        ║\n");
     printf("╚════════════════════════════════════╝\n");
 
-    printf("Bem-vindo ao jogo Super Trunfo! ");
+    printf("Bem-vindo ao jogo Super Trunfo! Escolha uma opção abaixo:");
 
     int qtdCartas = 0;
-    Carta cartas[qtdCartas];
+    Carta *cartas = NULL;
     opcao = listarMenu(opcao);
-    int codigoExit = -1;
+    int codigoSair = -1;
 
-    while (opcao != codigoExit)
+    while (opcao != codigoSair)
     {
-        if (opcao == 1)
+        switch (opcao)
         {
+        case 1:
             printf("╭────────────────────────────────────╮\n");
             printf("│         CADASTRO DE CARTAS         │\n");
             printf("╰────────────────────────────────────╯\n");
             printf("Digite a quantidade de cartas a serem cadastradas: ");
             scanf("%d", &qtdCartas);
             getchar();
+
+            cartas = (Carta *)malloc(qtdCartas * sizeof(Carta));
 
             for (int i = 0; i < qtdCartas; i++)
             {
@@ -154,9 +147,8 @@ int main()
 
             printf("Voltando para o menu... \n");
             opcao = listarMenu(opcao);
-        }
-        else if (opcao == 2)
-        {
+            break;
+        case 2:
             if (qtdCartas == 0)
             {
                 printf("Nenhuma carta cadastrada! \n");
@@ -172,9 +164,8 @@ int main()
                 printf("Voltando para o menu... \n");
                 opcao = listarMenu(opcao);
             }
-        }
-        else if (opcao == 3)
-        {
+            break;
+        case 3:
             if (qtdCartas == 0)
             {
                 printf("Nenhuma carta cadastrada! \n");
@@ -206,7 +197,6 @@ int main()
             printf("Seu atributo: ");
             scanf("%d", &atributoIndex);
             const char *atributo = atributos[atributoIndex - 1];
-            printf("test-Seu atributo: %s ", atributo);
 
             printf("Selecione o número das cartas que deseja comparar \n");
 
@@ -218,7 +208,7 @@ int main()
             scanf("%d", &primeiraCartaIndex);
             getchar();
             Carta *primeiraCarta = &cartas[primeiraCartaIndex - 1];
-            // primeiraCarta.superPoder = primeiraCarta.populacao + primeiraCarta.pib + primeiraCarta.densidadePopulacional + primeiraCarta.area + primeiraCarta.qtdPontosTuristicos;
+            primeiraCarta->superPoder = primeiraCarta->populacao + primeiraCarta->pib + primeiraCarta->densidadePopulacional + primeiraCarta->area + primeiraCarta->qtdPontosTuristicos;
 
             printf("╭──────────────────────────────────────╮\n");
             printf("│            CARTA N. %d               │\n", primeiraCartaIndex);
@@ -232,13 +222,14 @@ int main()
             printf("│ Densidade Popul.: %.2f pessoas/km²   \n", primeiraCarta->densidadePopulacional);
             printf("│ PIB per Capita: %.2f                 \n", primeiraCarta->pibPerCapita);
             printf("│ Número de Pontos Turísticos: %d      \n", primeiraCarta->qtdPontosTuristicos);
+            printf("│ Super Poder: %.2f                     \n", primeiraCarta->superPoder);
             printf("╰──────────────────────────────────────╯\n");
 
             printf("Carta B - N. : ");
             scanf("%d", &segundaCartaIndex);
             getchar();
             Carta *segundaCarta = &cartas[segundaCartaIndex - 1];
-            // segundaCarta.superPoder = segundaCarta.populacao + segundaCarta.pib + segundaCarta.densidadePopulacional + segundaCarta.area + segundaCarta.qtdPontosTuristicos;
+            segundaCarta->superPoder = segundaCarta->populacao + segundaCarta->pib + segundaCarta->densidadePopulacional + segundaCarta->area + segundaCarta->qtdPontosTuristicos;
 
             printf("╭──────────────────────────────────────╮\n");
             printf("│            CARTA N. %d               │\n", segundaCartaIndex);
@@ -252,6 +243,7 @@ int main()
             printf("│ Densidade Popul.: %.2f pessoas/km²   \n", segundaCarta->densidadePopulacional);
             printf("│ PIB per Capita: %.2f                 \n", segundaCarta->pibPerCapita);
             printf("│ Número de Pontos Turísticos: %d      \n", segundaCarta->qtdPontosTuristicos);
+            printf("│ Super Poder: %.2f                    \n", segundaCarta->superPoder);
             printf("╰──────────────────────────────────────╯\n");
 
             Carta *vencedora = primeiraCarta;
@@ -283,7 +275,7 @@ int main()
             printf("🏆 **Carta Vencedora**: %s \n", tipoVencedora);
 
             printf("╭──────────────────────────────────────╮\n");
-            printf("│            CARTA %s               │\n", tipoVencedora);
+            printf("│            CARTA %s                  │\n", tipoVencedora);
             printf("├──────────────────────────────────────┤\n");
             printf("│ Estado: %s                           \n", vencedora->estado);
             printf("│ Código da Carta: %s                  \n", vencedora->codigo);
@@ -294,21 +286,21 @@ int main()
             printf("│ Densidade Popul.: %.2f pessoas/km²   \n", vencedora->densidadePopulacional);
             printf("│ PIB per Capita: %.2f                 \n", vencedora->pibPerCapita);
             printf("│ Número de Pontos Turísticos: %d      \n", vencedora->qtdPontosTuristicos);
+            printf("│ Super Poder: %.2f                    \n", vencedora->superPoder);
             printf("╰──────────────────────────────────────╯\n");
             printf("Voltando para o menu... \n");
             opcao = listarMenu(opcao);
-        }
-        else if (opcao == 4)
-        {
+            break;
+        case 4:
             printf("Jogo finalizado!");
-            opcao = codigoExit;
+            opcao = codigoSair;
             return 0;
-        }
-        else
-        {
+            break;
+        default:
             printf("Opção inválida! \n");
             printf("Voltando para o menu... \n");
             opcao = listarMenu(opcao);
+            break;
         }
     };
 
